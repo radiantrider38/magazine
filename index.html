@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahi Voice 2024 | Publication Architecture</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #c8f04d;
+            --text-hi: #ffffff;
+            --text-mid: #a0a0a0;
+            --border: rgba(255,255,255,0.08);
+            --font-display: 'Playfair Display', serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @media (pointer: fine) {
+            * { cursor: none; }
+        }
+
+        body { 
+            background: var(--bg); 
+            color: var(--text-hi); 
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        #cursor {
+            position: fixed;
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.2s var(--ease);
+            display: none;
+        }
+        @media (pointer: fine) { #cursor { display: block; } }
+
+        /* Navigation */
+        header {
+            padding: 30px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(5,5,5,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .shahi-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+        }
+
+        .logo-box {
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 70% 100%, 0% 100%);
+        }
+
+        /* Hero / Typography Section */
+        .hero-section {
+            padding: 120px 6% 80px 6%;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-title-container {
+            overflow: hidden;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(50px, 12vw, 160px);
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-title span {
+            display: block;
+            transform: translateY(100%);
+            animation: slideUp 1s var(--ease) forwards;
+        }
+
+        .hero-title .outline {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-hi);
+            font-style: italic;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); }
+        }
+
+        /* Effort / Role Breakdown Grid */
+        .effort-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 80px;
+        }
+
+        .effort-card {
+            border: 1px solid var(--border);
+            padding: 40px;
+            background: rgba(255,255,255,0.01);
+            transition: all 0.5s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .effort-card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, transparent 50%, var(--border) 50%);
+        }
+
+        .effort-card:hover {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.03);
+            transform: translateY(-5px);
+        }
+
+        .effort-card i {
+            font-size: 24px;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        .effort-card h3 {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 15px;
+            color: var(--text-hi);
+        }
+
+        .effort-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-mid);
+            font-weight: 300;
+        }
+
+        /* Technical Illustration Background */
+        .tech-bg {
+            position: absolute;
+            top: 10%;
+            right: 0%;
+            width: 400px;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Publication Gallery */
+        .preview-label {
+            padding: 100px 6% 40px 6%;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--accent);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .gallery-wrap {
+            padding: 0 6% 100px 6%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-box {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            aspect-ratio: 1/1.4;
+        }
+
+        .gallery-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s var(--ease);
+            filter: saturate(1.1);
+        }
+
+        .gallery-box:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Interactive Counter Section */
+        .stats-strip {
+            padding: 60px 6%;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .stat-item h4 {
+            font-family: var(--font-mono);
+            font-size: 32px;
+            color: var(--accent);
+        }
+
+        .stat-item span {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            text-transform: uppercase;
+            color: var(--text-mid);
+            letter-spacing: 0.2em;
+        }
+
+        /* Canva Section */
+        .canva-wrapper {
+            padding: 100px 6%;
+            background: #000;
+        }
+
+        .embed-frame {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            border: 1px solid var(--border);
+            background: #080808;
+        }
+
+        .embed-frame iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 0;
+        }
+
+        footer {
+            padding: 80px 6% 40px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-mid);
+        }
+
+        @media (max-width: 900px) {
+            .gallery-wrap { grid-template-columns: repeat(2, 1fr); }
+            .stats-strip { flex-wrap: wrap; gap: 40px; }
+        }
+
+        @media (max-width: 600px) {
+            .gallery-wrap { grid-template-columns: 1fr; }
+            .hero-section { padding-top: 80px; }
+            .effort-card { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <header>
+        <div class="shahi-logo">
+            <div class="logo-box"></div>
+            SHAHI_VOICE // 2024
+        </div>
+        <div class="shahi-logo" style="color: var(--text-mid)">
+            RAJSHAHI CADET COLLEGE
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <svg class="tech-bg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" />
+                <path d="M10 50 L90 50 M50 10 L50 90" stroke="currentColor" stroke-width="0.2" />
+                <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" stroke-width="0.5" />
+            </svg>
+
+            <div class="hero-title-container">
+                <h1 class="hero-title">
+                    <span>SHAHI</span>
+                    <span class="outline">VOICE</span>
+                </h1>
+            </div>
+
+            <div class="effort-grid">
+                <!-- Effort Card 1: Leadership -->
+                <div class="effort-card">
+                    <i class="bi bi-command"></i>
+                    <h3>SEGMENT_COORDINATION</h3>
+                    <p>Acting as the central manager, I synchronized the efforts between our conceptual visionary team and technical layout artists, ensuring a cohesive architectural flow across 200+ pages.</p>
+                </div>
+
+                <!-- Effort Card 2: Technical -->
+                <div class="effort-card">
+                    <i class="bi bi-bounding-box"></i>
+                    <h3>LAYOUT_ARCHITECTURE</h3>
+                    <p>Pioneered the complex page setup protocols and grid systems that defined our biennial's look—balancing modern typography with traditional college prestige.</p>
+                </div>
+
+                <!-- Effort Card 3: Historic Milestone -->
+                <div class="effort-card">
+                    <i class="bi bi-shield-check"></i>
+                    <h3>IN_HOUSE_FIRST</h3>
+                    <p>Led the Cadet Graphics Team in RCC's first-ever full internal production cycle, moving from external dependency to a 100% student-managed publication workflow.</p>
+                </div>
+
+                <!-- Effort Card 4: Strategy -->
+                <div class="effort-card">
+                    <i class="bi bi-diagram-3"></i>
+                    <h3>RESOURCE_OPTIMIZATION</h3>
+                    <p>Managed technical assets, image processing, and print-ready mastering, optimizing every graphic element for high-fidelity physical publication.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="stats-strip">
+            <div class="stat-item">
+                <h4>200+</h4>
+                <span>Pages Designed</span>
+            </div>
+            <div class="stat-item">
+                <h4>100%</h4>
+                <span>Cadet Managed</span>
+            </div>
+            <div class="stat-item">
+                <h4>01st</h4>
+                <span>In-House Issue</span>
+            </div>
+        </div>
+
+        <div class="preview-label">PREVIEW // SPREAD_SAMPLES</div>
+        
+        <section class="gallery-wrap">
+            <div class="gallery-box"><img src="https://raw.githubusercontent.com/radiantrider38/Uploads/refs/heads/main/1.png"></div>
+            <div class="gallery-box"><img src="https://raw.githubusercontent.com/radiantrider38/Uploads/refs/heads/main/2.png"></div>
+            <div class="gallery-box"><img src="https://raw.githubusercontent.com/radiantrider38/Uploads/refs/heads/main/3.png"></div>
+            <div class="gallery-box"><img src="https://raw.githubusercontent.com/radiantrider38/Uploads/refs/heads/main/4.png"></div>
+            <div class="gallery-box"><img src="https://raw.githubusercontent.com/radiantrider38/Uploads/refs/heads/main/199.png"></div>
+            <div class="gallery-box"><img src="https://raw.githubusercontent.com/radiantrider38/Uploads/refs/heads/main/200.png"></div>
+        </section>
+
+        <section class="canva-wrapper">
+            <div style="margin-bottom: 40px;">
+                <h2 style="font-family: var(--font-display); font-size: 32px;">FULL PUBLICATION VIEW</h2>
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--accent);">DIGITAL_PREVIEW_ACTIVE</span>
+            </div>
+            <div class="embed-frame">
+                <iframe src="https://www.canva.com/design/DAHDi-1pFBs/__LGlmA_R3unZ0yfHRZX8w/view?embed" allowfullscreen></iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>
+            PRODUCED BY RAJSHAHI CADET COLLEGE GRAPHICS TEAM<br>
+            © 2024 RS_LABS
+        </div>
+        <div style="text-align: right;">
+            SYSTEM_TIME: MAR_2024<br>
+            COORD_MANAGER: RAZIN_SALEH
+        </div>
+    </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('.effort-card, .gallery-box, iframe, header').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(6)');
+            el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+        });
+
+        // Intersection animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.effort-card, .gallery-box').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(40px)';
+            el.style.transition = 'all 1s var(--ease)';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
